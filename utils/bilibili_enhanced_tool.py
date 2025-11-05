@@ -439,7 +439,7 @@ class BilibiliEnhancedTool:
             print(f"获取字幕内容失败: {e}")
             return None
     
-    def get_video_subtitle(self, video_id: str, page: int = 1, lang: str = 'zh-CN') -> Optional[str]:
+    def get_video_subtitle(self, video_id: str, page: int = 1, lang: str = 'zh') -> Optional[str]:
         """获取视频字幕文本
         
         Args:
@@ -467,10 +467,12 @@ class BilibiliEnhancedTool:
             # 查找指定语言的字幕
             target_subtitle = None
             for subtitle in subtitle_info:
-                if subtitle.get('lan') == lang:
+                if lang in subtitle.get('lan', ''):
                     target_subtitle = subtitle
                     break
             
+            #print(f"所有可用字幕: {[(s.get('lan'), s.get('lan_doc')) for s in subtitle_info]}")
+
             # 如果没找到指定语言，使用第一个可用的字幕
             if not target_subtitle and subtitle_info:
                 target_subtitle = subtitle_info[0]
